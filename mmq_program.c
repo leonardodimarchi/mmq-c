@@ -40,9 +40,10 @@ void alocaFloat(float **p, int tam);
 void qtdNumerosTabela(int *num);
 void receberTermos(int *num, float *x, float *y);
 
-void main (  ) {
+void main() {
   float *matriz=NULL;
   int *linha=NULL, *coluna=NULL;
+  
   system("pause");
 }
 
