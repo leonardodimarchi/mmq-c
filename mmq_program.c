@@ -40,40 +40,54 @@ void alocaFloat(float **p, int tam);
 void qtdNumerosTabela(int *num);
 void receberTermos(int *num, float *x, float *y);
 
-void main() {
-  float *matriz=NULL;
-  int *linha=NULL, *coluna=NULL;
-  
-  system("pause");
+int main() {
+  float *matriz=NULL, *x = NULL, *y = NULL;
+  int *quantidadeTermos = NULL;
+
+  alocaInt(&quantidadeTermos, 1);
+  recebeQtdNumerosTabela(quantidadeTermos);
+
+  alocaFloat(&x,*quantidadeTermos);
+  alocaFloat(&y,*quantidadeTermos);
+
+  receberTermos(quantidadeTermos, x, y);
+
+  system("PAUSE");
+  return 0;
 }
 
 void receberTermos(int *num, float *x, float *y){
-	int f;
-	printf("\nEnter data:\n");
-	for(f=0; f<(*num); f++){
-		printf("x[%d] = ",f);
-		scanf("%f",x+f);
+	int contador;
 
-		printf("y[%d] = ",f);
-		scanf("%f",y+f);
+	printf("\n--- Digite os valores ---\n");
+
+	for(contador=0; contador<(*num); contador++){
+		printf("x[%d] = ",contador);
+		scanf("%f",x+contador);
 	}
+
+  for(contador=0; contador<(*num); contador++){
+    printf("y[%d] = ",contador);
+		scanf("%f",y+contador);
+	}
+
 }
 
-void qtdNumerosTabela(int *num){
-	printf("\nEnter number of data: ");
+void recebeQtdNumerosTabela(int *num){
+	printf("\nQuantidade de termos da tabela: ");
 	scanf("%d",num);
 }
 
 void alocaFloat(float **p, int tam){
   if((*p=(float*)realloc(*p,tam*sizeof(float)))==NULL){
-    printf("\nDynamic Allocation Error! (float)\n");
+    printf("\nFalha na alocacao dinamica !(float)\n");
     exit(1);
   }
 }
 
 void alocaInt(int **p, int tam){
   if((*p=(int*)realloc(*p,tam*sizeof(int)))==NULL){
-    printf("\nDynamic Allocation Error! (int)\n");
+    printf("\nFalha na alocacao dinamica ! (int)\n");
     exit(1);
   }
 }
