@@ -86,8 +86,6 @@ void calculaMostraSistemaEscalar(int *quantidadeTermos, float *y, float *u0, flo
   int linha, coluna, contador;
   float resultado=0;
 
-  //ponteiro+(<linha acessada>*total de colunas+<coluna acessada>)
-
   //Realiza os calculos do sistema escalar
   for(linha=0; linha < 2; linha++){
 
