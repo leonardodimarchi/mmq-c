@@ -1,36 +1,24 @@
-// #region Passos do Metodo dos Minimos Quadrados
-/*
+/* Passos do Metodo dos Minimos Quadrados
 
+1) Recebimento dos dados da tabela
+
+2) Implementacao do Metodo dos Minimos Quadrados, com opcao de reta ou parabola
+  2.1) Calcular vetores e exibi-los (y, u0, u1...)
+  2.2) Calcular e exibir o sistema escalar resultante
+  2.3) Calcular e exibir o sistema resultante da Eliminacao de Gauss
+
+3) Exibir o polinomio p(x) obtido atraves do sistema equivalente (Eliminacao de Gauss)
+
+*/
+
+
+/*
 - Vai ter só reta ou parabola
 - Retas são matrizes 2x2
 - Parabolas são Matrizes 3x3 
 
-1)
-
+- O vetor u0 é tudo 1 
 */
-// #endregion
-
-// #include <stdlib.h>
-// #include <stdio.h>
-
-// void main (){
-//     float matriz[3][3];
-//     int linha, coluna;
-
-//     for(linha=0; linha < 3; linha++){
-//         for(coluna=0; coluna < 3; coluna++){
-//             printf("Digite o valor para a linha %i e coluna %i: ",linha, coluna);
-//             scanf("%f", &matriz[linha][coluna]);
-//         }
-//     }
-
-//     for(linha=0; linha < 3; linha++){
-//         for(coluna=0; coluna < 3; coluna++){
-//             printf("%.1f\t", matriz[linha][coluna]);
-//         }
-//         printf("\n");
-//     }
-// }
 
 #include<stdio.h>
 #include<stdlib.h>
@@ -42,7 +30,7 @@ void receberTermos(int *num, float *x, float *y);
 
 int main() {
   float *matriz=NULL, *x = NULL, *y = NULL;
-  int *quantidadeTermos = NULL;
+  int *quantidadeTermos = NULL, opc;
 
   alocaInt(&quantidadeTermos, 1);
   recebeQtdNumerosTabela(quantidadeTermos);
@@ -51,6 +39,23 @@ int main() {
   alocaFloat(&y,*quantidadeTermos);
 
   receberTermos(quantidadeTermos, x, y);
+
+  do{
+    printf("\nEscolha: [1] Reta\t[2] Parabola\n");
+    scanf("%i", &opc);
+
+    switch(opc){
+      case 1: 
+        //fazer MMQ de reta
+        break;
+      case 2:
+        //fazer MMQ de parabola
+        break;
+      default:
+        printf("\nPor favor, tente novamente...\n");
+    }
+
+  }while(opc != 1 && opc != 2);
 
   system("PAUSE");
   return 0;
