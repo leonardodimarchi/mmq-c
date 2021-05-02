@@ -24,16 +24,19 @@ Passos do Metodo dos Minimos Quadrados
 #include<stdio.h>
 #include<stdlib.h>
 
+//Prototipos de funcoes gerais
 void alocaInt(int **p, int tam);
 void alocaFloat(float **p, int tam);
 void recebeQtdNumerosTabela(int *num);
 void receberTermos(int *num, float *x, float *y);
-void aplicarMetodoReta(int *quantidadeTermos, float *y, float *x);
-void calculaMostraVetoresReta(int *quantidadeTermos, float *y, float *x, float *u0, float *u1);
-void calculaMostraSistemaEscalar(int *quantidadeTermos, float *y, float *u0, float *u1, float *sistemaMatriz);
 void mostrarMatriz(float *matriz, int quantidadeDeLinhas, int quantidadeDeColunas);
 
-//Parabola
+//Prototipos de funcoes para ajustes de reta
+void aplicarMetodoReta(int *quantidadeTermos, float *y, float *x);
+void calculaMostraVetoresReta(int *quantidadeTermos, float *y, float *x, float *u0, float *u1);
+void calculaMostraSistemaEscalarReta(int *quantidadeTermos, float *y, float *u0, float *u1, float *sistemaMatriz);
+
+//Prototipos de funcoes para ajuste de parabola
 void calculaMostraVetoresParabola(int *quantidadeTermos, float *y, float *x, float *u0, float *u1, float *u2);
 
 int main() {
@@ -73,16 +76,53 @@ int main() {
 
 void aplicarMetodoReta(int *quantidadeTermos, float *y, float *x){
   float *sistemaMatriz=NULL,*u0=NULL, *u1=NULL;
+  float *coeficienteA0 = NULL, *coeficienteA1 = NULL;
 
   alocaFloat(&sistemaMatriz,6);
   alocaFloat(&u0, *quantidadeTermos);
   alocaFloat(&u1, *quantidadeTermos);
+  alocaFloat(&coeficienteA0, 1);
+  alocaFloat(&coeficienteA1, 1);
 
   calculaMostraVetoresReta(quantidadeTermos, y, x, u0, u1);
-  calculaMostraSistemaEscalar(quantidadeTermos, y, u0, u1, sistemaMatriz);
+  calculaMostraSistemaEscalarReta(quantidadeTermos, y, u0, u1, sistemaMatriz);
+  calculaMostraSistemaGauss(sistemaMatriz, coeficienteA0, coeficienteA1);
+
+  if(*coeficienteA1 > 0){
+    printf("\nA reta que possui o melhor ajuste da funcao tabelada: p(x) = %.3f + %.3fx\n", *coeficienteA0, *coeficienteA1);
+  }else if(*coeficienteA1 < 0){
+    printf("\nA reta que possui o melhor ajuste da funcao tabelada: p(x) = %.3f - %.3fx\n", *coeficienteA0, *coeficienteA1);
+  }else{
+    printf("\nA reta que possui o melhor ajuste da funcao tabelada: p(x) = %.3f\n", *coeficienteA0);
+  }
+  
 }
 
-void calculaMostraSistemaEscalar(int *quantidadeTermos, float *y, float *u0, float *u1, float *sistemaMatriz){
+void calculaMostraSistemaGauss(float *sistemaMatriz, float *coeficienteA0, float *coeficienteA1){
+  int contador;
+  float auxiliar;
+  float multiplicador = *(sistemaMatriz+(1*3+0)) / *(sistemaMatriz+(0*3+0));
+
+  //Linha2 = Linha2 - Linha1 * multiplicador
+  for(contador=0; contador < 3; contador++){
+    auxiliar = *(sistemaMatriz+(0*3+contador)) * multiplicador;
+    *(sistemaMatriz+(1*3+contador)) -= auxiliar;
+  }
+
+  *coeficienteA1 = *(sistemaMatriz+(1*3+2)) / *(sistemaMatriz+(1*3+1));
+
+  auxiliar = *(sistemaMatriz+(0*3+1)) * *coeficienteA1;
+
+  if(auxiliar > 0){
+    auxiliar = *(sistemaMatriz+(0*3+2)) - auxiliar;
+  }else{
+    auxiliar = *(sistemaMatriz+(0*3+2)) + auxiliar;
+  }
+
+  *coeficienteA0 = auxiliar / *(sistemaMatriz+(0*3+0));
+}
+
+void calculaMostraSistemaEscalarReta(int *quantidadeTermos, float *y, float *u0, float *u1, float *sistemaMatriz){
   int linha, coluna, contador;
   float resultado=0;
 
