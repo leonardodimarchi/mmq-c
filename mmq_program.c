@@ -3,7 +3,7 @@ Passos do Metodo dos Minimos Quadrados
 
 1) Recebimento dos dados da tabela
 
-2) Implementacao do Metodo dos Minimos Quadrados, com opcao de reta ou parabola
+2) Implementacao do Metodo dos Minimos Quadrados, com escolhaRetaParabolaao de reta ou parabola
   2.1) Calcular vetores e exibi-los (y, u0, u1...)
   2.2) Calcular e exibir o sistema escalar resultante
   2.3) Calcular e exibir o sistema resultante da Eliminacao de Gauss
@@ -11,16 +11,18 @@ Passos do Metodo dos Minimos Quadrados
 3) Exibir o polinomio p(x) obtido atraves do sistema equivalente (Eliminacao de Gauss)
 */
 
-
 /* 
+
 - Vai ter só reta ou parabola
 - Retas são matrizes 2x3 (linha e coluna)
 - Parabolas são Matrizes 3x4 (linha e coluna)
 
 - O vetor u0 é tudo 1 
 - O vetor u1 é o proprio X
+
 */
 
+//Bibliotecas
 #include<stdio.h>
 #include<stdlib.h>
 
@@ -39,36 +41,66 @@ void calculaMostraSistemaEscalarReta(int *quantidadeTermos, float *y, float *u0,
 //Prototipos de funcoes para ajuste de parabola
 void calculaMostraVetoresParabola(int *quantidadeTermos, float *y, float *x, float *u0, float *u1, float *u2);
 
+//Main
 int main() {
+
+  //Variaveis
   float *x = NULL, *y = NULL;
-  int *quantidadeTermos = NULL, opc;
+  int *quantidadeTermos = NULL, escolhaRetaParabola;
+  char escolhaContinuacao;
 
   alocaInt(&quantidadeTermos, 1);
-  recebeQtdNumerosTabela(quantidadeTermos);
-
-  alocaFloat(&x,*quantidadeTermos);
-  alocaFloat(&y,*quantidadeTermos);
-
-  receberTermos(quantidadeTermos, x, y);
-
+  
+  //Repetição geral para a escolha de inserir uma nova tabela
   do{
-    printf("\nEscolha: [1] Reta\t[2] Parabola: ");
-    scanf("%i", &opc);
+    system("cls");
 
-    switch(opc){
-      case 1: 
-        aplicarMetodoReta(quantidadeTermos, y, x);
-        break;
+    printf("\n------ Metodo dos Minimos Quadrados ------\n");
 
-      case 2:
-        //aplicarMetodoParabola();
-        break;
+    recebeQtdNumerosTabela(quantidadeTermos);
+    alocaFloat(&x,*quantidadeTermos);
+    alocaFloat(&y,*quantidadeTermos);
 
-      default:
-        printf("\nPor favor, tente novamente...\n");
-    }
+    receberTermos(quantidadeTermos, x, y);
 
-  }while(opc != 1 && opc != 2);
+
+    //Escolha de continuacao a partir da mesma tabela
+    do{
+
+      //Escolha do tipo de ajuste (reta ou parabola)
+      do{
+        printf("\nEscolha: [1] Reta\t[2] Parabola: ");
+        fflush(stdin);
+        scanf("%i", &escolhaRetaParabola);
+
+        switch(escolhaRetaParabola){
+          case 1: 
+            aplicarMetodoReta(quantidadeTermos, y, x);
+            break;
+
+          case 2:
+            //aplicarMetodoParabola();
+            break;
+
+          default:
+            printf("\nPor favor, tente novamente...\n");
+        }
+      }while(escolhaRetaParabola != 1 && escolhaRetaParabola != 2);
+
+      printf("\nDeseja realizar outro ajuste com a mesma tabela ? [S/n]: ");
+      fflush(stdin);
+      scanf("%c", &escolhaContinuacao);
+
+    }while(escolhaContinuacao != 'n' && escolhaContinuacao != 'N');
+  
+    
+    printf("\nDeseja inserir outra tabela ? [S/n]: ");
+    fflush(stdin);
+    scanf("%c", &escolhaContinuacao);
+
+  }while(escolhaContinuacao != 'n' && escolhaContinuacao != 'N');
+  
+  printf("\n\n------\n\nFeito por:\n\t-> Luiz\n\t-> Leonardo\n\n");
 
   system("PAUSE");
   return 0;
@@ -88,14 +120,17 @@ void aplicarMetodoReta(int *quantidadeTermos, float *y, float *x){
   calculaMostraSistemaEscalarReta(quantidadeTermos, y, u0, u1, sistemaMatriz);
   calculaMostraSistemaGauss(sistemaMatriz, coeficienteA0, coeficienteA1);
 
+  //Resultados
+  printf("\nValor de a0: %.3f", *coeficienteA0);
+  printf("\nValor de a1: %.3f", *coeficienteA1);
+
   if(*coeficienteA1 > 0){
-    printf("\nA reta que possui o melhor ajuste da funcao tabelada: p(x) = %.3f + %.3fx\n", *coeficienteA0, *coeficienteA1);
+    printf("\n\nA reta que possui o melhor ajuste da funcao tabelada: p(x) = %.3f + %.3fx\n", *coeficienteA0, *coeficienteA1);
   }else if(*coeficienteA1 < 0){
-    printf("\nA reta que possui o melhor ajuste da funcao tabelada: p(x) = %.3f - %.3fx\n", *coeficienteA0, *coeficienteA1);
+    printf("\n\nA reta que possui o melhor ajuste da funcao tabelada: p(x) = %.3f - %.3fx\n", *coeficienteA0, *coeficienteA1);
   }else{
-    printf("\nA reta que possui o melhor ajuste da funcao tabelada: p(x) = %.3f\n", *coeficienteA0);
+    printf("\n\nA reta que possui o melhor ajuste da funcao tabelada: p(x) = %.3f\n", *coeficienteA0);
   }
-  
 }
 
 void calculaMostraSistemaGauss(float *sistemaMatriz, float *coeficienteA0, float *coeficienteA1){
@@ -120,6 +155,9 @@ void calculaMostraSistemaGauss(float *sistemaMatriz, float *coeficienteA0, float
   }
 
   *coeficienteA0 = auxiliar / *(sistemaMatriz+(0*3+0));
+
+  printf("\n--- Eliminacao de Gauss - Sistema linear equivalente ---\n");
+  mostrarMatriz(sistemaMatriz, 2, 3);
 }
 
 void calculaMostraSistemaEscalarReta(int *quantidadeTermos, float *y, float *u0, float *u1, float *sistemaMatriz){
@@ -220,12 +258,14 @@ void calculaMostraVetoresParabola(int *quantidadeTermos, float *y, float *x, flo
 void receberTermos(int *num, float *x, float *y){
 	int contador;
 
-	printf("\n--- Digite os valores ---\n");
+	printf("\n--- Digite os valores para X ---\n");
 
 	for(contador=0; contador<(*num); contador++){
 		printf("x[%d] = ",contador);
 		scanf("%f",x+contador);
 	}
+
+  printf("\n--- Digite os valores para Y ---\n");
 
   for(contador=0; contador<(*num); contador++){
     printf("y[%d] = ",contador);
