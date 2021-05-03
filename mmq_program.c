@@ -63,7 +63,6 @@ int main() {
 
     receberTermos(quantidadeTermos, x, y);
 
-
     //Escolha de continuacao a partir da mesma tabela
     do{
 
