@@ -1,24 +1,14 @@
 /* 
-Passos do Metodo dos Minimos Quadrados
+  Passos do Metodo dos Minimos Quadrados
 
-1) Recebimento dos dados da tabela
+  1) Recebimento dos dados da tabela
 
-2) Implementacao do Metodo dos Minimos Quadrados, com escolhaRetaParabolaao de reta ou parabola
-  2.1) Calcular vetores e exibi-los (y, u0, u1...)
-  2.2) Calcular e exibir o sistema escalar resultante
-  2.3) Calcular e exibir o sistema resultante da Eliminacao de Gauss
+  2) Implementacao do Metodo dos Minimos Quadrados, com escolhaRetaParabolaao de reta ou parabola
+    2.1) Calcular vetores e exibi-los (y, u0, u1...)
+    2.2) Calcular e exibir o sistema escalar resultante
+    2.3) Calcular e exibir o sistema resultante da Eliminacao de Gauss
 
-3) Exibir o polinomio p(x) obtido atraves do sistema equivalente (Eliminacao de Gauss)
-*/
-
-/* 
-- Vai ter só reta ou parabola
-- Retas são matrizes 2x3 (linha e coluna)
-- Parabolas são Matrizes 3x4 (linha e coluna)
-
-- O vetor u0 é tudo 1 
-- O vetor u1 é o proprio X
-- O vetor u2 é x^2
+  3) Exibir o polinomio p(x) obtido atraves do sistema equivalente (Eliminacao de Gauss)
 */
 
 //Bibliotecas
@@ -56,6 +46,7 @@ int main() {
   
   //Repetição geral para a escolha de inserir uma nova tabela
   do{
+
     system("cls");
 
     printf("\n------ Metodo dos Minimos Quadrados ------\n");
@@ -71,6 +62,7 @@ int main() {
 
       //Escolha do tipo de ajuste (reta ou parabola)
       do{
+
         printf("\nEscolha: [1] Reta\t[2] Parabola: ");
         fflush(stdin);
         scanf("%i", &escolhaRetaParabola);
@@ -109,7 +101,6 @@ int main() {
 }
 
 //Funcoes para ajuste de parabola
-
 void aplicarMetodoParabola(int *quantidadeTermos, float *y, float *x){
   float *sistemaMatriz=NULL,*u0=NULL, *u1=NULL, *u2 = NULL;
   float *coeficienteA0 = NULL, *coeficienteA1 = NULL, *coeficienteA2 = NULL;
@@ -282,7 +273,7 @@ void aplicarMetodoReta(int *quantidadeTermos, float *y, float *x){
   if(*coeficienteA1 > 0){
     printf("\n\nA reta que possui o melhor ajuste da funcao tabelada: p(x) = %.3f + %.3fx\n", *coeficienteA0, *coeficienteA1);
   }else if(*coeficienteA1 < 0){
-    printf("\n\nA reta que possui o melhor ajuste da funcao tabelada: p(x) = %.3f - %.3fx\n", *coeficienteA0, *coeficienteA1);
+    printf("\n\nA reta que possui o melhor ajuste da funcao tabelada: p(x) = %.3f %.3fx\n", *coeficienteA0, *coeficienteA1);
   }else{
     printf("\n\nA reta que possui o melhor ajuste da funcao tabelada: p(x) = %.3f\n", *coeficienteA0);
   }
